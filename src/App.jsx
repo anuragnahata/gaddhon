@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-// --- Icons as Inline SVGs (No dependencies required) ---
+// --- Icons as Inline SVGs ---
 const Icons = {
   Trophy: ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -75,6 +75,19 @@ const Icons = {
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </svg>
+  ),
+  Share: ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <polyline points="16 6 12 2 8 6" />
+      <line x1="12" x2="12" y1="2" y2="15" />
+    </svg>
+  ),
+  Camera: ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+      <circle cx="12" cy="13" r="3" />
+    </svg>
   )
 };
 
@@ -82,8 +95,8 @@ const Icons = {
 const categories = [
   {
     id: 'comedy',
-    title: 'Comedy, Drama & Storytime',
-    subtitle: "Who needs Netflix when you have these cousins?",
+    title: 'Comedy & Drama',
+    subtitle: "Who needs Netflix?",
     icon: <Icons.Sparkles className="w-6 h-6" />,
     awards: [
       {
@@ -97,7 +110,8 @@ const categories = [
         ]
       },
       {
-        title: "Best Storyteller (Would pay to hear)",
+        title: "Best Storyteller",
+        subtitle: "Would pay to hear",
         data: [
           { name: "Devashish", votes: 3 },
           { name: "Anurag", votes: 2 },
@@ -108,7 +122,7 @@ const categories = [
         ]
       },
       {
-        title: "Who changed the most this year?",
+        title: "Changed the most?",
         data: [
           { name: "Nidhi", votes: 3 },
           { name: "Devashish", votes: 2 },
@@ -122,12 +136,12 @@ const categories = [
   },
   {
     id: 'survival',
-    title: 'Survival, Chaos & Calls',
-    subtitle: "Who survives the zombie apocalypse vs. who is just multitasking?",
+    title: 'Survival & Calls',
+    subtitle: "Chaos management.",
     icon: <Icons.Video className="w-6 h-6" />,
     awards: [
       {
-        title: "Most Resourceful Cousin",
+        title: "Most Resourceful",
         data: [
           { name: "Anurag", votes: 8 },
           { name: "Mayank", votes: 1 },
@@ -168,8 +182,8 @@ const categories = [
   },
   {
     id: 'heart',
-    title: 'Heart, Help & Wisdom',
-    subtitle: "The real ones keeping the family together.",
+    title: 'Heart & Help',
+    subtitle: "Keeping us together.",
     icon: <Icons.Heart className="w-6 h-6" />,
     awards: [
       {
@@ -192,7 +206,7 @@ const categories = [
         ]
       },
       {
-        title: "Most Helpful Person",
+        title: "Most Helpful",
         data: [
           { name: "Honey", votes: 4 },
           { name: "Mayank", votes: 3 },
@@ -214,7 +228,7 @@ const categories = [
         ]
       },
       {
-        title: "Trusted with Life Decisions",
+        title: "Trusted with Decisions",
         data: [
           { name: "Devashish", votes: 2 },
           { name: "Ritika", votes: 2 },
@@ -230,8 +244,8 @@ const categories = [
   },
   {
     id: 'foodies',
-    title: 'Foodies & Troublemakers',
-    subtitle: "From masterchefs to master troublemakers.",
+    title: 'Foodies & Trouble',
+    subtitle: "Masterchefs & pranksters.",
     icon: <Icons.Utensils className="w-6 h-6" />,
     awards: [
       {
@@ -265,7 +279,7 @@ const categories = [
   {
     id: 'love',
     title: 'Love & Fame',
-    subtitle: "Who is next in line for the wedding bells?",
+    subtitle: "Wedding bells & autographs.",
     icon: <Icons.Star className="w-6 h-6" />,
     awards: [
       {
@@ -305,7 +319,7 @@ const categories = [
   {
     id: 'politics',
     title: 'Sanskaar & Politics',
-    subtitle: "The official hierarchy of favorites.",
+    subtitle: "The official hierarchy.",
     icon: <Icons.Users className="w-6 h-6" />,
     awards: [
       {
@@ -320,7 +334,7 @@ const categories = [
         ]
       },
       {
-        title: "Param's Favorite Uncle/Aunt",
+        title: "Param's Favorite",
         data: [
           { name: "Muskan", votes: 2 },
           { name: "Nidhi", votes: 2 },
@@ -349,19 +363,129 @@ const categories = [
 
 // --- Sub-Components ---
 
+const StoryCard = ({ award, themeIndex }) => {
+  const maxVotes = Math.max(...award.data.map(d => d.votes));
+  const winners = award.data.filter(d => d.votes === maxVotes);
+  const totalVotes = award.data.reduce((acc, curr) => acc + curr.votes, 0);
+  const percentage = Math.round((maxVotes / totalVotes) * 100);
+
+  const themes = [
+    "from-purple-600 via-pink-600 to-red-600", // Retro Pop
+    "from-green-400 via-emerald-600 to-teal-900", // Spotify Green
+    "from-yellow-400 via-orange-500 to-red-600", // Golden Hour
+    "from-blue-400 via-indigo-600 to-violet-800", // Deep Space
+    "from-slate-900 via-purple-900 to-slate-900", // Dark Mode
+  ];
+
+  const currentTheme = themes[themeIndex % themes.length];
+  const winnerNames = winners.map(w => w.name).join(" & ");
+
+  return (
+    <div className="flex-shrink-0 w-[85vw] md:w-[350px] aspect-[9/16] relative rounded-3xl overflow-hidden shadow-2xl snap-center mx-4 group select-none">
+      {/* Background */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${currentTheme} animate-gradient-xy`}></div>
+      <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
+      
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-between p-8 text-white">
+        
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div className="text-xs font-bold tracking-[0.2em] uppercase opacity-80">Gaddhon Wrapped</div>
+          <Icons.Trophy className="w-5 h-5 text-white/80" />
+        </div>
+
+        {/* Main Body */}
+        <div className="flex flex-col gap-6">
+          <div className="inline-block px-4 py-1 border border-white/30 rounded-full text-xs font-medium self-start backdrop-blur-md">
+            {award.subtitle || "The Award Goes To"}
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl font-black leading-[0.9] drop-shadow-lg break-words font-display">
+            {award.title}
+          </h2>
+
+          <div className="mt-4">
+             <div className="text-sm font-medium opacity-75 mb-1 uppercase tracking-wider">Top Winner</div>
+             <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 drop-shadow-sm">
+               {winnerNames}
+             </div>
+          </div>
+        </div>
+
+        {/* Footer Stats */}
+        <div>
+          <div className="flex items-end gap-2 mb-6">
+            <span className="text-6xl font-black leading-none">{percentage}%</span>
+            <span className="text-sm font-medium mb-2 opacity-80">of total votes</span>
+          </div>
+          
+          <div className="pt-6 border-t border-white/20 flex justify-between items-center">
+             <span className="text-xs font-bold tracking-widest uppercase">Gaddhon Awards 2025</span>
+             <div className="flex gap-2">
+                {/* Decorational dots like Instagram stories */}
+                <div className="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-white/50"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const StoryStudio = ({ onClose }) => {
+  const allAwards = categories.flatMap(cat => cat.awards);
+  
+  return (
+    <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col animate-fadeIn">
+      {/* Header */}
+      <div className="h-16 flex items-center justify-between px-6 border-b border-white/10">
+        <div className="flex items-center gap-2">
+          <Icons.Camera className="w-5 h-5 text-yellow-500" />
+          <span className="font-bold text-white tracking-wide">Wrapped Studio</span>
+        </div>
+        <button 
+          onClick={onClose}
+          className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+        >
+          <Icons.X className="w-5 h-5 text-white" />
+        </button>
+      </div>
+
+      {/* Scroll Container */}
+      <div className="flex-1 overflow-x-auto flex items-center px-8 py-8 md:py-4 snap-x snap-mandatory scrollbar-hide">
+        {allAwards.map((award, idx) => (
+          <StoryCard key={idx} award={award} themeIndex={idx} />
+        ))}
+        
+        {/* End Card */}
+        <div className="flex-shrink-0 w-[85vw] md:w-[350px] aspect-[9/16] flex flex-col items-center justify-center text-center p-8 snap-center mx-4">
+          <h3 className="text-2xl font-bold text-white mb-2">That's a Wrap!</h3>
+          <p className="text-slate-400 mb-6">Screenshot your favorites and tag the family!</p>
+          <button onClick={onClose} className="px-6 py-3 bg-yellow-500 text-black font-bold rounded-full hover:bg-yellow-400 transition-colors">
+            Back to Awards
+          </button>
+        </div>
+      </div>
+
+      {/* Footer Hint */}
+      <div className="h-12 flex items-center justify-center text-slate-500 text-xs uppercase tracking-widest pb-4">
+        Swipe to view • Screenshot to share
+      </div>
+    </div>
+  );
+};
+
 const SplashScreen = ({ onFinish }) => {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    // Stage 1: Icon pop
     setTimeout(() => setStage(1), 500);
-    // Stage 2: Text slide up
     setTimeout(() => setStage(2), 1200);
-    // Stage 3: Date fade in
     setTimeout(() => setStage(3), 2000);
-    // Stage 4: Exit
     setTimeout(() => setStage(4), 3000);
-    // Complete
     setTimeout(onFinish, 3600);
   }, [onFinish]);
 
@@ -494,7 +618,7 @@ const Section = ({ category }) => {
   );
 };
 
-const Nav = () => {
+const Nav = ({ onOpenStudio }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -519,8 +643,7 @@ const Nav = () => {
             <span className="font-bold text-base md:text-lg tracking-wider text-white truncate">GADDHON<span className="text-yellow-500">2025</span></span>
           </div>
           
-          {/* Desktop Nav - Switched to lg to prevent overlap on medium screens */}
-          <div className="hidden lg:flex gap-6">
+          <div className="hidden lg:flex gap-6 items-center">
             {categories.map(cat => (
               <button 
                 key={cat.id}
@@ -530,9 +653,14 @@ const Nav = () => {
                 {cat.id}
               </button>
             ))}
+            <button 
+              onClick={onOpenStudio}
+              className="ml-4 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full text-xs font-bold uppercase tracking-wider hover:brightness-110 transition-all"
+            >
+              <Icons.Camera className="w-3 h-3" /> Wrapped Stories
+            </button>
           </div>
 
-          {/* Mobile Toggle - Visible on lg and below */}
           <button className="lg:hidden text-white p-2 z-50 relative" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <Icons.X className="w-6 h-6" /> : <Icons.Menu className="w-6 h-6" />}
           </button>
@@ -545,6 +673,12 @@ const Nav = () => {
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
+         <button 
+            onClick={() => { onOpenStudio(); setIsOpen(false); }}
+            className="w-full text-left py-4 text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 border-b border-slate-800 flex items-center gap-2"
+          >
+            <Icons.Camera className="w-5 h-5 text-pink-500" /> View Wrapped Stories
+          </button>
          {categories.map(cat => (
             <button 
               key={cat.id}
@@ -561,6 +695,7 @@ const Nav = () => {
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const [showStudio, setShowStudio] = useState(false);
 
   return (
     <div className="bg-black min-h-screen text-slate-200 font-sans selection:bg-yellow-500/30 selection:text-yellow-200 overflow-x-hidden">
@@ -570,12 +705,32 @@ export default function App() {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
         }
+        @keyframes gradient-xy {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .animate-gradient-xy {
+          background-size: 200% 200%;
+          animation: gradient-xy 6s ease infinite;
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
         .font-display { font-family: 'Playfair Display', serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
       
       {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+      
+      {showStudio && <StoryStudio onClose={() => setShowStudio(false)} />}
 
-      <Nav />
+      <Nav onOpenStudio={() => setShowStudio(true)} />
 
       {/* Hero */}
       <header className="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
@@ -583,7 +738,7 @@ export default function App() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-900 via-black to-black opacity-80"></div>
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent"></div>
         
-        {/* Spotlights - Adjusted size for mobile */}
+        {/* Spotlights */}
         <div className="absolute top-[-10%] left-[10%] w-64 h-64 md:w-96 md:h-96 bg-yellow-500/10 blur-[80px] md:blur-[120px] rounded-full animate-pulse"></div>
         <div className="absolute bottom-[-10%] right-[10%] w-64 h-64 md:w-96 md:h-96 bg-purple-900/20 blur-[80px] md:blur-[120px] rounded-full"></div>
 
@@ -606,13 +761,20 @@ export default function App() {
             Honoring the Chaos, The Love, and The Absolute Madness of Our Family.
           </p>
           
-          <button 
-            onClick={() => document.getElementById('comedy').scrollIntoView({ behavior: 'smooth' })}
-            className="mt-12 md:mt-16 group flex flex-col items-center gap-2 text-slate-500 hover:text-yellow-400 transition-colors mx-auto cursor-pointer"
-          >
-            <span className="text-[10px] md:text-xs uppercase tracking-widest">Start the Show</span>
-            <Icons.ArrowDown className="w-4 h-4 md:w-5 md:h-5 animate-bounce" />
-          </button>
+          <div className="mt-12 md:mt-16 flex flex-col md:flex-row gap-4 justify-center items-center">
+             <button 
+              onClick={() => document.getElementById('comedy').scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-sm uppercase tracking-widest transition-colors"
+            >
+              See Winners
+            </button>
+            <button 
+              onClick={() => setShowStudio(true)}
+              className="px-8 py-3 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full text-white font-bold text-sm uppercase tracking-widest shadow-lg hover:brightness-110 transition-all flex items-center gap-2"
+            >
+              <Icons.Camera className="w-4 h-4" /> Wrapped Stories
+            </button>
+          </div>
         </div>
       </header>
 
