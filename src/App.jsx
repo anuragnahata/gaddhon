@@ -14,7 +14,7 @@ const Icons = {
   ),
   Sparkles: ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z" />
       <path d="M5 3v4" />
       <path d="M9 5H5" />
       <path d="M19 19v-4" />
@@ -87,27 +87,35 @@ const categories = [
     icon: <Icons.Sparkles className="w-6 h-6" />,
     awards: [
       {
-        title: "Funniest Cousin",
+        title: "Who made you laugh the most?",
         data: [
           { name: "Devashish", votes: 3 },
           { name: "Money", votes: 3 },
-          { name: "Ritika", votes: 1 }
+          { name: "Ritika", votes: 2 },
+          { name: "Nishant", votes: 1 },
+          { name: "Anurag", votes: 1 }
         ]
       },
       {
-        title: "Best Story-time",
+        title: "Best Storyteller (Would pay to hear)",
         data: [
           { name: "Devashish", votes: 3 },
+          { name: "Anurag", votes: 2 },
           { name: "Nidhi", votes: 2 },
-          { name: "Anurag", votes: 2 }
+          { name: "Muskan", votes: 1 },
+          { name: "Money", votes: 1 },
+          { name: "Ritika", votes: 1 }
         ]
       },
       {
-        title: "Most Changed This Year",
+        title: "Who changed the most this year?",
         data: [
           { name: "Nidhi", votes: 3 },
-          { name: "Devashish", votes: 1 },
-          { name: "Ritika", votes: 1 }
+          { name: "Devashish", votes: 2 },
+          { name: "Ritika", votes: 2 },
+          { name: "Muskan", votes: 1 },
+          { name: "Mayank", votes: 1 },
+          { name: "Riya", votes: 1 }
         ]
       }
     ]
@@ -119,10 +127,21 @@ const categories = [
     icon: <Icons.Video className="w-6 h-6" />,
     awards: [
       {
-        title: "Most Resourceful",
+        title: "Most Resourceful Cousin",
         data: [
           { name: "Anurag", votes: 8 },
-          { name: "Gaurav", votes: 2 }
+          { name: "Mayank", votes: 1 },
+          { name: "Gaurav", votes: 1 }
+        ]
+      },
+      {
+        title: "Video Call Multitasker",
+        data: [
+          { name: "Riya", votes: 5 },
+          { name: "Nishant", votes: 2 },
+          { name: "Muskan", votes: 1 },
+          { name: "Aditya", votes: 1 },
+          { name: "Ritika", votes: 1 }
         ]
       },
       {
@@ -135,11 +154,13 @@ const categories = [
         ]
       },
       {
-        title: "Video Call Legend",
+        title: "Most Missed on Calls",
         data: [
-          { name: "Riya", votes: 5 },
-          { name: "Nishant", votes: 2 },
-          { name: "Aditya", votes: 1 },
+          { name: "Aditya", votes: 3 },
+          { name: "Mayank", votes: 2 },
+          { name: "Riya", votes: 2 },
+          { name: "Devashish", votes: 1 },
+          { name: "Gaurav", votes: 1 },
           { name: "Ritika", votes: 1 }
         ]
       }
@@ -147,7 +168,7 @@ const categories = [
   },
   {
     id: 'heart',
-    title: 'Heart, Help & Inspiration',
+    title: 'Heart, Help & Wisdom',
     subtitle: "The real ones keeping the family together.",
     icon: <Icons.Heart className="w-6 h-6" />,
     awards: [
@@ -155,24 +176,54 @@ const categories = [
         title: "Glue of the Family",
         data: [
           { name: "Money", votes: 6 },
-          { name: "Nishant", votes: 2 }
+          { name: "Nishant", votes: 4 }
         ]
       },
       {
         title: "Most Inspiring",
         data: [
+          { name: "Nishant", votes: 2 },
           { name: "Honey", votes: 2 },
           { name: "Ritika", votes: 2 },
-          { name: "Nishant", votes: 2 },
-          { name: "Others", votes: 4 }
+          { name: "Devashish", votes: 1 },
+          { name: "Nidhi", votes: 1 },
+          { name: "Aditya", votes: 1 },
+          { name: "Gaurav", votes: 1 }
         ]
       },
       {
-        title: "Most Helpful",
+        title: "Most Helpful Person",
         data: [
           { name: "Honey", votes: 4 },
           { name: "Mayank", votes: 3 },
-          { name: "Money", votes: 2 }
+          { name: "Money", votes: 2 },
+          { name: "Aditya", votes: 1 }
+        ]
+      },
+      {
+        title: "Best Life Advice",
+        data: [
+          { name: "Nidhi", votes: 2 },
+          { name: "Money", votes: 2 },
+          { name: "Devashish", votes: 1 },
+          { name: "Muskan", votes: 1 },
+          { name: "Nishant", votes: 1 },
+          { name: "Riya", votes: 1 },
+          { name: "Honey", votes: 1 },
+          { name: "Ritika", votes: 1 }
+        ]
+      },
+      {
+        title: "Trusted with Life Decisions",
+        data: [
+          { name: "Devashish", votes: 2 },
+          { name: "Ritika", votes: 2 },
+          { name: "Riya", votes: 1 },
+          { name: "Nidhi", votes: 1 },
+          { name: "Honey", votes: 1 },
+          { name: "Money", votes: 1 },
+          { name: "Aditya", votes: 1 },
+          { name: "Gaurav", votes: 1 }
         ]
       }
     ]
@@ -187,18 +238,10 @@ const categories = [
         title: "Biggest Foodie",
         data: [
           { name: "Muskan", votes: 6 },
-          { name: "Aditya", votes: 1 },
-          { name: "Nidhi", votes: 1 },
+          { name: "Devashish", votes: 1 },
           { name: "Anurag", votes: 1 },
-          { name: "Devashish", votes: 1 }
-        ]
-      },
-      {
-        title: "Most Creative Artist",
-        data: [
-          { name: "Honey", votes: 7 },
-          { name: "Muskan", votes: 1 },
-          { name: "Riya", votes: 1 }
+          { name: "Nidhi", votes: 1 },
+          { name: "Aditya", votes: 1 }
         ]
       },
       {
@@ -206,6 +249,14 @@ const categories = [
         data: [
           { name: "Devashish", votes: 8 },
           { name: "Anurag", votes: 1 },
+          { name: "Riya", votes: 1 }
+        ]
+      },
+      {
+        title: "Most Creative Artist",
+        data: [
+          { name: "Honey", votes: 7 },
+          { name: "Muskan", votes: 2 },
           { name: "Riya", votes: 1 }
         ]
       }
@@ -223,7 +274,11 @@ const categories = [
           { name: "Honey", votes: 3 },
           { name: "Devashish", votes: 1 },
           { name: "Muskan", votes: 1 },
-          { name: "Nishant", votes: 1 }
+          { name: "Nishant", votes: 1 },
+          { name: "Anurag", votes: 1 },
+          { name: "Riya", votes: 1 },
+          { name: "Money", votes: 1 },
+          { name: "Ritika", votes: 1 }
         ]
       },
       {
@@ -232,7 +287,8 @@ const categories = [
           { name: "Devashish", votes: 4 },
           { name: "Mayank", votes: 2 },
           { name: "Money", votes: 2 },
-          { name: "Nishant", votes: 1 }
+          { name: "Nishant", votes: 1 },
+          { name: "Anurag", votes: 1 }
         ]
       },
       {
@@ -240,8 +296,8 @@ const categories = [
         data: [
           { name: "Ritika", votes: 3 },
           { name: "Muskan", votes: 3 },
-          { name: "Nidhi", votes: 1 },
-          { name: "Aditya", votes: 1 }
+          { name: "Aditya", votes: 2 },
+          { name: "Nidhi", votes: 2 }
         ]
       }
     ]
@@ -258,25 +314,33 @@ const categories = [
           { name: "Honey", votes: 3 },
           { name: "Money", votes: 2 },
           { name: "Aditya", votes: 2 },
-          { name: "Muskan", votes: 1 }
+          { name: "Muskan", votes: 1 },
+          { name: "Mayank", votes: 1 },
+          { name: "Ritika", votes: 1 }
         ]
       },
       {
-        title: "Param's Favorite",
+        title: "Param's Favorite Uncle/Aunt",
         data: [
           { name: "Muskan", votes: 2 },
           { name: "Nidhi", votes: 2 },
           { name: "Honey", votes: 2 },
-          { name: "Nishant", votes: 1 }
+          { name: "Nishant", votes: 1 },
+          { name: "Mayank", votes: 1 },
+          { name: "Money", votes: 1 },
+          { name: "Gaurav", votes: 1 }
         ]
       },
       {
-        title: "Dadi's Favorite (Suspected)",
+        title: "Dadi's Favorite",
         data: [
           { name: "Money", votes: 3 },
           { name: "Honey", votes: 2 },
+          { name: "Muskan", votes: 1 },
+          { name: "Anurag", votes: 1 },
           { name: "Aditya", votes: 1 },
-          { name: "Gaurav", votes: 1 }
+          { name: "Gaurav", votes: 1 },
+          { name: "Ritika", votes: 1 }
         ]
       }
     ]
